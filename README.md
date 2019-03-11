@@ -6,7 +6,7 @@
 
 ## Demo
 
-![See the demo](https://devinle.github.io/weatherapp/)
+[See the demo](https://devinle.github.io/weatherapp/)
 
 ## Usage
 
