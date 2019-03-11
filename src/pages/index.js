@@ -96,7 +96,7 @@ class Homepage extends Component {
    * @returns {String} HTML string
    */
   renderGeolocationButton() {
-    if(navigator.geolocation) {
+    if(window.navigator.geolocation) {
       return <button className="plain" onClick={this.handleGetLocation}>Locate me</button>;
     }
   }
@@ -105,7 +105,7 @@ class Homepage extends Component {
    * Used to trigger geolocation query
    */
   getGeo() {
-    navigator.geolocation.getCurrentPosition(this.queryWeatherByLocation);
+    window.navigator.geolocation.getCurrentPosition(this.queryWeatherByLocation);
   }
   /**
    * @function handleGeoLocation
