@@ -20,7 +20,9 @@ class Homepage extends Component {
    * for last saved search
    */
   componentDidMount() {
-      this.state.navigator = window.navigator;
+      this.setState({
+          navigator: window.navigator ? window.navigator : null
+      });
       // For convenience, load last query from local storage
       const lastLocation = localStorage.getItem('weatherAppCityName');
       const lastMetric = localStorage.getItem('weatherAppMetric');
@@ -97,6 +99,7 @@ class Homepage extends Component {
    * @returns {String} HTML string
    */
   renderGeolocationButton() {
+    if(!this.state.navigator) return;
     return <button className="plain" onClick={this.handleGetLocation}>Locate me</button>;
   }
   /**
