@@ -43,7 +43,7 @@
 - Search Form
 - Large card for today’s weather
 - Small cards for remaining days
-- Slider for hourly today
+- Slider for hourly today (not used)
 - API request
 - Geolocation functionality
 - Local Storage to save last search
