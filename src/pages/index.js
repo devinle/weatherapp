@@ -366,7 +366,7 @@ class Homepage extends Component {
           <form className="searchForm" onSubmit={this.handleSubmit} autoComplete="off">
             <p><label htmlFor="search">Search a city to fetch the 5 day forecast.</label></p>
             <div className="searchForm__inner">
-              <input id="search" className="searchForm__input" type="text" placeholder="ie Vancouver,ca" value={this.state.location} onChange={this.handleChange} />
+              <input id="search" className="searchForm__input" type="text" placeholder="ie Vancouver,CA" value={this.state.location} onChange={this.handleChange} />
               <button className="searchForm__button" type="submit">Search</button>
             </div>
           </form>
