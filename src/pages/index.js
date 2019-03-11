@@ -96,7 +96,7 @@ class Homepage extends Component {
    * @returns {String} HTML string
    */
   renderGeolocationButton() {
-    if(window.navigator.geolocation) {
+    if(window && window.navigator.geolocation) {
       return <button className="plain" onClick={this.handleGetLocation}>Locate me</button>;
     }
   }
