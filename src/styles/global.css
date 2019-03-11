@@ -61,6 +61,7 @@ button.metric.active {
 .time {
     text-transform: uppercase;
 }
+.error,
 .loading {
     text-align: center;
     justify-content: center;

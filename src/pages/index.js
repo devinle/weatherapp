@@ -8,7 +8,7 @@ class Homepage extends Component {
     super(props);
     this.state = {
       loading: false,
-      error: false,
+      error: '',
       location: '',
       units: 'metric', // Default
       weather: {},
@@ -65,7 +65,7 @@ class Homepage extends Component {
    * the active location.
    */
   renderTodaysWeather() {
-      if(this.state.loading || !this.state.today.name) return '';
+      if(this.state.loading || !this.state.today.name || this.state.error !== '') return '';
       const { today } = this.state;
       return (
         <div className="today">
@@ -154,7 +154,10 @@ class Homepage extends Component {
     try {
       if(this.state.location === '' && !payload.lat && !payload.lon) return;
       // Loading...
-      this.setState({ loading: true });
+      this.setState({ 
+          loading: true,
+          error: ''
+      });
       // Await fetch from API
       const { data: weather } = await api.fetchForecastData({ ...payload, units: this.state.units });
       const { data: today } = await api.fetchWeatherData({ ...payload, units: this.state.units })
@@ -169,9 +172,16 @@ class Homepage extends Component {
       localStorage.setItem('weatherAppCityName', this.state.location);
       localStorage.setItem('weatherAppMetric', this.state.units);
     } catch(error) {
+      const status = error.response.status;
+      let errorMessage = '';
+      if(status === 404) {
+        errorMessage = 'Your location cannot be found. Please be sure to include City and Country Code. ie. Vancouver,CA';
+      } else {
+        errorMessage = 'Oops. There is a technical issue fetching weather. Please try again later.'
+      }
       this.setState({
         loading: false,
-        error,
+        error: errorMessage,
       });
     }
   }
@@ -301,13 +311,12 @@ class Homepage extends Component {
    * @returns {String} HTML with details
    */
   getWeatherListing() {
-    if(this.state.loading) return [];
+    if(this.state.loading || this.state.error !== '') return [];
     return this.getDaysFromWeather().map(({dt}, key) => {
         return (
             <div className="weather__day" key={key}>
                 <div className="headline">{this.getDateAsString(dt)}</div>
-                <div className="weather__hours">
-                    {
+                <div className="weather__hours">  {
                         this.getWeatherByDay(dt).map(({ dt, weather, main }, key) => {
                             return (<div className="weather__card" key={key}>
                                 <div className="weather__time">{this.getDateAsHours(dt)}</div>
@@ -336,6 +345,19 @@ class Homepage extends Component {
       }
       return '';
   }
+    /**
+   * @function isError
+   * Used to output an error message if there are API
+   * issues returned.
+   * 
+   * @return {String} - Error string
+   */
+  isError() {
+    if(this.state.error !== '') {
+      return <div className="error">{this.state.error}</div>
+    }
+    return '';
+  }
   // Main render function
   render() {
     return (
@@ -351,6 +373,7 @@ class Homepage extends Component {
           {this.renderGeolocationButton()}
           {this.renderTodaysWeather()}
           <div className="weather">
+            {this.isError()}
             {this.isLoading()}
             {this.getWeatherListing()}
           </div>
